@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Free VPN | وكيل ويب مجاني + بحث</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #0a0f1e, #010105);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* خلفية عالم رقمي */
+        .digital-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, 
+                rgba(0, 255, 255, 0.05) 0px, 
+                rgba(0, 255, 255, 0.05) 1px, 
+                transparent 1px, 
+                transparent 10px);
+            animation: rainMove 15s linear infinite;
+        }
+
+        @keyframes rainMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 60px; }
+        }
+
+        .glow-ball {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 40% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+            animation: ballPulse 4s ease infinite alternate;
+        }
+
+        @keyframes ballPulse {
+            0% { opacity: 0.3; transform: scale(1);}
+            100% { opacity: 0.9; transform: scale(1.1);}
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            margin-bottom: 25px;
+            border: 1px solid #0ff;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #00ffff, #3c7eff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88, #0088aa);
+            color: #000;
+            padding: 8px 25px;
+            border-radius: 40px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* VPN Status */
+        .vpn-status {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px solid #0ff;
+        }
+
+        .status-led {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4444;
+            margin-left: 8px;
+        }
+
+        .status-led.connected {
+            background: #00ff00;
+            box-shadow: 0 0 8px #00ff00;
+        }
+
+        /* خوادم VPN */
+        .servers-section {
+            background: rgba(10, 20, 35, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .servers-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .servers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .server-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            cursor: pointer;
+            border-right: 3px solid #0ff;
+        }
+
+        .server-card:hover {
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .server-card.active {
+            background: rgba(0, 255, 255, 0.2);
+            border-right: 3px solid #ffcc00;
+        }
+
+        .server-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .server-flag {
+            font-size: 32px;
+        }
+
+        .connect-btn {
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #0ff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .connect-btn:hover {
+            background: #0ff;
+            color: #000;
+        }
+
+        /* صندوق البحث الجديد - هيفتح صفحة جديدة */
+        .search-section {
+            background: rgba(10, 20, 35, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .search-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #0ff;
+        }
+
+        .search-wrapper {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-radius: 60px;
+            border: 1px solid #0ff;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            outline: none;
+        }
+
+        .search-wrapper button {
+            background: linear-gradient(135deg, #00aaff, #0055aa);
+            border: none;
+            padding: 0 35px;
+            border-radius: 60px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-wrapper button:hover {
+            background: linear-gradient(135deg, #0ff, #0088aa);
+            color: #000;
+        }
+
+        /* وكيل التصفح (VPN) */
+        .proxy-section {
+            background: rgba(10, 20, 35, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .url-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .url-group input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 60px;
+            border: 1px solid #0ff;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            outline: none;
+        }
+
+        .url-group button {
+            background: linear-gradient(135deg, #00aaff, #0055aa);
+            border: none;
+            padding: 0 25px;
+            border-radius: 60px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .iframe-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #0ff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+            background: white;
+        }
+
+        .info-note {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        @media (max-width: 550px) {
+            .search-wrapper { flex-direction: column; }
+            .url-group { flex-direction: column; }
+            iframe { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+<div class="digital-bg">
+    <div class="matrix-rain"></div>
+    <div class="glow-ball"></div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔓 Free VPN Proxy</h1>
+        <p>وكيل ويب مجاني | إخفاء IP | فتح المواقع المحجوبة</p>
+        <div class="free-badge">✨ مجاني بالكامل - بدون تسجيل ✨</div>
+    </div>
+
+    <div class="vpn-status" id="vpnStatus">
+        <span class="status-led" id="statusLed"></span>
+        <span id="statusText">غير متصل - اختر خادماً للاتصال</span>
+    </div>
+
+    <!-- خوادم VPN -->
+    <div class="servers-section">
+        <div class="servers-title">🌍 خوادم مجانية (اختر واحداً)</div>
+        <div class="servers-grid" id="serversGrid"></div>
+    </div>
+
+    <!-- صندوق البحث - هيفتح في صفحة جديدة -->
+    <div class="search-section">
+        <div class="search-title">🔍 بحث آمن (يفتح في صفحة جديدة)</div>
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="ماذا تريد أن تبحث؟ (مثال: كرة القدم)">
+            <button id="searchBtn">🔎 بحث</button>
+        </div>
+    </div>
+
+    <!-- وكيل VPN للتصفح -->
+    <div class="proxy-section">
+        <div class="search-title">🌐 تصفح عبر الـ VPN (يظهر هنا)</div>
+        <div class="url-group">
+            <input type="text" id="urlInput" placeholder="أدخل رابط الموقع... مثال: google.com">
+            <button onclick="browseViaProxy()">🚀 تصفح</button>
+        </div>
+        <div class="iframe-container">
+            <iframe id="browserFrame" src="about:blank"></iframe>
+        </div>
+        <div class="info-note">
+            💡 الـ VPN يخفي عنوان IP الحقيقي - اختر خادماً مختلفاً للمناطق المختلفة
+        </div>
+    </div>
+
+    <footer>
+        🔐 VPN مجاني 100% - جميع الخوادم مفتوحة المصدر
+    </footer>
+</div>
+
+<script>
+    // =================== خوادم VPN ===================
+    const servers = [
+        { name: "خادم أمريكا", flag: "🇺🇸", location: "نيويورك, USA", proxyUrl: "https://cors-anywhere.herokuapp.com/", ping: "45ms", active: false },
+        { name: "خادم أوروبا", flag: "🇪🇺", location: "فرانكفورت, ألمانيا", proxyUrl: "https://corsproxy.io/", ping: "78ms", active: false },
+        { name: "خادم آسيا", flag: "🇸🇬", location: "سنغافورة", proxyUrl: "https://api.allorigins.win/get?url=", ping: "112ms", active: false },
+        { name: "خادم عالمي", flag: "🌍", location: "سحابة عالمية", proxyUrl: "https://cors-proxy.htmldriven.com/?url=", ping: "95ms", active: false }
+    ];
+
+    let currentServer = null;
+    let currentProxyUrl = null;
+
+    // عرض الخوادم
+    function displayServers() {
+        const container = document.getElementById('serversGrid');
+        container.innerHTML = servers.map((server, index) => `
+            <div class="server-card ${server.active ? 'active' : ''}">
+                <div class="server-info">
+                    <span class="server-flag">${server.flag}</span>
+                    <div>
+                        <h4>${server.name}</h4>
+                        <p>${server.location}</p>
+                    </div>
+                </div>
+                <div class="server-ping">⚡ ${server.ping}</div>
+                <button class="connect-btn" onclick="connectToServer(${index})">
+                    ${server.active ? '✅ متصل' : '🔌 اتصل'}
+                </button>
+            </div>
+        `).join('');
+    }
+
+    // الاتصال بالخادم
+    function connectToServer(index) {
+        servers.forEach(s => s.active = false);
+        servers[index].active = true;
+        currentServer = servers[index];
+        currentProxyUrl = currentServer.proxyUrl;
+        
+        displayServers();
+        
+        const statusLed = document.getElementById('statusLed');
+        const statusText = document.getElementById('statusText');
+        
+        statusLed.classList.add('connected');
+        statusText.innerHTML = `🟢 متصل على ${currentServer.name} - تم إخفاء الـ IP`;
+        
+        localStorage.setItem('activeServer', JSON.stringify({ name: currentServer.name, index: index }));
+    }
+
+    // =================== البحث - يفتح صفحة جديدة ===================
+    function performSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) {
+            alert('الرجاء إدخال نص للبحث');
+            return;
+        }
+        
+        // فتح بحث جوجل في صفحة جديدة
+        const searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+        window.open(searchUrl, '_blank');
+    }
+
+    // =================== التصفح عبر الوكيل ===================
+    function browseViaProxy() {
+        let url = document.getElementById('urlInput').value.trim();
+        const iframe = document.getElementById('browserFrame');
+        const statusText = document.getElementById('statusText');
+        
+        if (!url) {
+            alert('الرجاء إدخال رابط الموقع');
+            return;
+        }
+        
+        if (!currentProxyUrl) {
+            alert('⚠️ الرجاء اختيار خادم VPN أولاً من القائمة أعلاه');
+            return;
+        }
+        
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+        
+        statusText.innerHTML = `🔄 جاري التصفح عبر ${currentServer.name}...`;
+        
+        if (currentProxyUrl.includes('allorigins')) {
+            const proxyUrl = currentProxyUrl + encodeURIComponent(url);
+            fetch(proxyUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const doc = iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(data.contents || '<html><body><h3>لا يمكن عرض المحتوى</h3></body></html>');
+                    doc.close();
+                    statusText.innerHTML = `🟢 متصل على ${currentServer.name} - يتصفح: ${url}`;
+                })
+                .catch(() => {
+                    statusText.innerHTML = `❌ فشل التحميل - جرب خادماً آخر`;
+                });
+        } else {
+            const proxyUrl = currentProxyUrl + encodeURIComponent(url);
+            iframe.src = proxyUrl;
+            statusText.innerHTML = `🟢 متصل على ${currentServer.name} - يتصفح: ${url}`;
+        }
+        
+        localStorage.setItem('lastUrl', url);
+    }
+
+    // تحميل الخادم المحفوظ
+    function loadSavedServer() {
+        const saved = localStorage.getItem('activeServer');
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                const serverIndex = data.index;
+                if (serverIndex !== undefined && servers[serverIndex]) {
+                    connectToServer(serverIndex);
+                }
+            } catch(e) {}
+        }
+        
+        const lastUrl = localStorage.getItem('lastUrl');
+        if (lastUrl) {
+            document.getElementById('urlInput').value = lastUrl;
+        }
+    }
+
+    // ربط الأحداث
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
+    });
+    document.getElementById('urlInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') browseViaProxy();
+    });
+
+    // تشغيل الموقع
+    displayServers();
+    loadSavedServer();
+    
+    if (!currentProxyUrl && servers.length > 0) {
+        connectToServer(0);
+    }
+</script>
+</body>
+</html>
